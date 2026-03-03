@@ -93,7 +93,7 @@ Let's say the target word is **CRANE**. Here's how a game might progress:
   <Tab title="On-screen keyboard">
     The on-screen keyboard has three rows:
     
-    ```
+    ```text
     Q W E R T Y U I O P
      A S D F G H J K L
       Z X C V B N M ✓ ←
@@ -178,15 +178,14 @@ KWordle automatically saves your game statistics including:
 
 Tap the **Stats** button anytime to see your progress!
 
-```javascript
-// Statistics are stored in localStorage
-var statistics = {
-  gamesPlayed: 0,
-  gamesWon: 0,
-  currentStreak: 0,
-  maxStreak: 0,
-  guessDistribution: [0, 0, 0, 0, 0, 0] // Attempts 1-6
-};
+```json
+{
+  "gamesPlayed": 0,
+  "gamesWon": 0,
+  "currentStreak": 0,
+  "maxStreak": 0,
+  "guessDistribution": [0, 0, 0, 0, 0, 0]
+}
 ```
 
 ## Tips for success

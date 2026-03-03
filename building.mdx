@@ -14,7 +14,7 @@ KWordle is distributed as a ZIP file containing:
 
 ## File Structure for Distribution
 
-```
+```text
 kwordle.zip
 ├── kwordle/
 │   ├── index.html
@@ -133,7 +133,7 @@ nohup lipc-set-prop com.lab126.appmgrd start app://$APP_ID >/dev/null 2>&1 &
 1. **Extract the ZIP** to a temporary folder
 2. **Connect Kindle** via USB
 3. **Copy files** to Documents folder:
-   ```
+   ```text
    /mnt/us/documents/kwordle/
    /mnt/us/documents/kwordle.sh
    ```
@@ -150,7 +150,9 @@ For quick development testing:
 ```bash
 # Start a local web server
 python3 -m http.server 8000
+```
 
+```bash
 # Open in browser
 open http://localhost:8000/index.html
 ```

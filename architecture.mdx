@@ -9,7 +9,7 @@ KWordle is built as a lightweight, self-contained web application optimized for 
 
 The KWordle application consists of these key files:
 
-```
+```text
 kwordle/
 ├── index.html          # Main HTML file with Chromebar configuration
 ├── main.js             # Core game logic and state management
@@ -94,13 +94,13 @@ This ensures accurate handling of duplicate letters.
 
 `loadStatistics()` (main.js:447) and `saveStatistics()` (main.js:463) manage game statistics in localStorage:
 
-```javascript
+```json
 {
-  gamesPlayed: 0,
-  gamesWon: 0,
-  currentStreak: 0,
-  maxStreak: 0,
-  guessDistribution: [0, 0, 0, 0, 0, 0]
+  "gamesPlayed": 0,
+  "gamesWon": 0,
+  "currentStreak": 0,
+  "maxStreak": 0,
+  "guessDistribution": [0, 0, 0, 0, 0, 0]
 }
 ```
 

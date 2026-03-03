@@ -153,14 +153,14 @@ KWordle uses localStorage to persist game statistics across sessions.
 
 ### Storage Structure
 
-```javascript
+```json
 {
   "kwordle-stats": {
-    gamesPlayed: 0,
-    gamesWon: 0,
-    currentStreak: 0,
-    maxStreak: 0,
-    guessDistribution: [0, 0, 0, 0, 0, 0]
+    "gamesPlayed": 0,
+    "gamesWon": 0,
+    "currentStreak": 0,
+    "maxStreak": 0,
+    "guessDistribution": [0, 0, 0, 0, 0, 0]
   }
 }
 ```
