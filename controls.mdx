@@ -1,0 +1,234 @@
+---
+title: Controls
+description: Master KWordle's input methods, keyboard shortcuts, and on-screen controls for optimal gameplay
+---
+
+## Input Methods
+
+KWordle supports two ways to enter letters:
+
+<CardGroup cols={2}>
+  <Card title="Physical Keyboard" icon="keyboard">
+    Use your Kindle's built-in physical keyboard (if available) to type letters directly.
+  </Card>
+  <Card title="On-Screen Keyboard" icon="mobile-screen">
+    Tap the virtual keyboard displayed on screen, optimized for Kindle's touchscreen.
+  </Card>
+</CardGroup>
+
+<Note>
+Both input methods work simultaneously - you can switch between them freely during gameplay.
+</Note>
+
+## Physical Keyboard Shortcuts
+
+When using your Kindle's physical keyboard:
+
+### Letter Input
+- **A-Z**: Type any letter A through Z to add it to your current guess
+- **Å, Ä, Ö**: Available when playing in Swedish mode
+
+### Special Keys
+
+| Key | Action | Description |
+|-----|--------|-------------|
+| **Enter** | Submit Guess | Submits your current 5-letter guess for validation |
+| **Backspace** | Delete Letter | Removes the last letter from your current guess |
+
+<Tip>
+Key presses are automatically converted to uppercase, so you don't need to hold Shift.
+</Tip>
+
+## On-Screen Keyboard
+
+The on-screen keyboard displays at the bottom of the game screen:
+
+### Layout Structure
+
+**Row 1**: `Q W E R T Y U I O P` (+ Å for Swedish)
+
+**Row 2**: `A S D F G H J K L` (+ Ö Ä for Swedish)
+
+**Row 3**: `✓ Z X C V B N M ←`
+
+### Special Buttons
+
+<AccordionGroup>
+  <Accordion title="✓ (Checkmark) - Enter Button">
+    **Position**: Bottom-left corner of keyboard (Row 3, left side)
+    
+    **Function**: Submits your current guess
+    
+    **Appearance**: Wide key with checkmark symbol
+    
+    **Behavior**:
+    - Only works when 5 letters are entered
+    - Shows "Not enough letters" if fewer than 5
+    - Shows "Not in word list" if word is invalid
+  </Accordion>
+  
+  <Accordion title="← (Arrow) - Backspace Button">
+    **Position**: Bottom-right corner of keyboard (Row 3, right side)
+    
+    **Function**: Deletes the last letter in your current guess
+    
+    **Appearance**: Wide key with left arrow symbol
+    
+    **Behavior**:
+    - Removes letters from right to left
+    - Clears error messages when pressed
+    - Does nothing if no letters are entered
+  </Accordion>
+</AccordionGroup>
+
+### Letter Key States
+
+Each letter key changes appearance based on game feedback:
+
+**Unused** (default)
+- No indicator
+- Letter not yet guessed
+- Standard appearance
+
+**Correct** ■
+- Filled square indicator
+- Letter is in the word AND in the correct position
+- Shows mini ■ symbol on the key
+
+**Present** □
+- Empty square indicator
+- Letter is in the word BUT in wrong position
+- Shows mini □ symbol on the key
+
+**Absent** ×
+- Cross indicator  
+- Letter is NOT in the word
+- Shows mini × symbol on the key
+
+<Note>
+Keyboard indicators help you track which letters you've already tried and their status, making it easier to plan your next guess.
+</Note>
+
+## Game Control Buttons
+
+Located below the keyboard:
+
+### Primary Controls
+
+<Tabs>
+  <Tab title="New Game">
+    **Function**: Starts a fresh game
+    
+    **What it does**:
+    - Selects a new random word
+    - Clears the game board
+    - Resets all letter states
+    - Keeps your statistics intact
+    
+    **When to use**:
+    - After winning or losing
+    - To practice with a different word
+    - To start over if stuck
+  </Tab>
+  
+  <Tab title="Language (e.g., English)">
+    **Function**: Cycles through available languages
+    
+    **What it does**:
+    - Changes to the next language in the list
+    - Updates button text to show current language
+    - Starts a new game with a word from that language
+    - Updates keyboard layout (adds Å, Ä, Ö for Swedish)
+    
+    **Languages cycle in order**:
+    English → French → German → Spanish → Portuguese → Swedish → Italian → Latin → (back to English)
+  </Tab>
+  
+  <Tab title="Stats">
+    **Function**: Opens the statistics modal
+    
+    **What it shows**:
+    - Games Played
+    - Win Percentage
+    - Current Streak
+    - Max Streak
+    - Guess Distribution chart
+    
+    **How to close**:
+    Click the × button in the top-right corner of the modal
+  </Tab>
+  
+  <Tab title="Credits">
+    **Function**: Opens the credits modal
+    
+    **What it shows**:
+    - Game developers
+    - Word list contributors
+    - Links to source repositories
+    
+    **How to close**:
+    Click the × button in the top-right corner of the modal
+  </Tab>
+</Tabs>
+
+## Kindle System Menu
+
+Access additional options through the Kindle menu:
+
+1. Tap the **More** button (three dots) in the Kindle toolbar
+2. Available options:
+   - **Reload**: Refreshes the game (same as F5 on desktop)
+   - **Close**: Exits KWordle and returns to Kindle home
+
+<Warning>
+Reloading the game will restart your current game but preserve your statistics. Any in-progress game will be lost without updating statistics.
+</Warning>
+
+## Gameplay Interaction Flow
+
+### Entering a Guess
+
+1. **Type 5 letters** using physical keyboard or tap on-screen keys
+2. **Letters appear** in the current row as you type
+3. **Press Enter** (✓ button or Enter key) to submit
+4. **Game validates** the word against the accepted word list
+5. **Feedback appears** with indicators (■, □, ×)
+6. **Keyboard updates** to show letter states
+7. **Move to next row** automatically
+
+### Correcting Mistakes
+
+1. **Press Backspace** (← button or Backspace key)
+2. **Last letter is removed** from the current row
+3. **Repeat** to remove more letters
+4. **Type new letters** to replace them
+
+### Error Messages
+
+Messages appear above the game board and auto-dismiss:
+
+- **"Not enough letters"** (2 seconds) - You pressed Enter with fewer than 5 letters
+- **"Not in word list"** (2 seconds) - Your guess isn't in the accepted word list
+- **"You won!"** (5 seconds) - Correct guess found!
+- **"Game over! The word was [WORD]"** (5 seconds) - All 6 attempts used
+
+<Tip>
+Error messages automatically clear when you start typing or press Backspace, so you don't need to wait for them to disappear.
+</Tip>
+
+## Accessibility Features
+
+### E-Ink Optimization
+- High contrast black and white design
+- Clear text indicators (■, □, ×) instead of colors
+- Large, tappable buttons for touchscreen
+- No animations to reduce e-ink ghosting
+
+### Keyboard Compatibility
+- Works with all Kindle keyboard types (QWERTY, physical, virtual)
+- Case-insensitive input (automatically converts to uppercase)
+- Multiple input methods supported simultaneously
+
+<Note>
+KWordle is specifically optimized for Kindle e-readers' unique display and input characteristics, ensuring smooth gameplay on e-ink screens.
+</Note>

@@ -1,0 +1,178 @@
+---
+title: Installation
+description: Step-by-step guide to install KWordle on your Kindle e-reader
+---
+
+## Before you begin
+
+KWordle works on Kindle e-readers with firmware version 5.6.1.1 or newer. Make sure you have:
+
+- A compatible Kindle e-reader
+- A USB cable to connect your Kindle to your computer
+- Administrator access to your computer (for file copying)
+
+<Note>
+  Different Kindle models require different versions of KWordle. Check your firmware version in **Settings > Device Options > Device Info** before downloading.
+</Note>
+
+## Choose your version
+
+<CardGroup cols={2}>
+  <Card
+    title="Legacy Kindle"
+    icon="clock-rotate-left"
+  >
+    **Firmware 5.6.1.1 or older**
+    
+    Download `kwordle-legacy.zip` from the releases page
+  </Card>
+  <Card
+    title="Modern Kindle"
+    icon="kindle"
+  >
+    **Firmware newer than 5.6.1.1**
+    
+    Download `kwordle.zip` from the releases page
+  </Card>
+</CardGroup>
+
+## Installation steps
+
+<Steps>
+  <Step title="Download the release">
+    Download the latest release from the [GitHub repository](https://github.com/crizmo/KWordle/releases).
+    
+    Choose the correct file for your Kindle model:
+    - `kwordle-legacy.zip` for older models (firmware 5.6.1.1 or earlier)
+    - `kwordle.zip` for newer models
+  </Step>
+
+  <Step title="Extract the files">
+    Unzip the downloaded file on your computer. You should see:
+    - A `kwordle` folder containing the game files
+    - A `kwordle.sh` shell script
+    
+    <Warning>
+      Keep the folder structure intact. The shell script expects the game files to be in a folder named `kwordle`.
+    </Warning>
+  </Step>
+
+  <Step title="Connect your Kindle">
+    Connect your Kindle to your computer using a USB cable.
+    
+    Your Kindle should appear as a removable drive or storage device on your computer. If prompted on your Kindle, confirm that you want to connect to the computer.
+  </Step>
+
+  <Step title="Copy files to Kindle">
+    Navigate to your Kindle's **Documents** folder.
+    
+    Copy both:
+    1. The entire `kwordle` folder
+    2. The `kwordle.sh` file
+    
+    directly into the Documents folder.
+    
+    <Note>
+      The final structure should be:
+      ```
+      /documents/
+        ├── kwordle/
+        │   ├── index.html
+        │   ├── main.js
+        │   ├── main.css
+        │   ├── config.xml
+        │   ├── wordle-icon.png
+        │   └── js/
+        │       ├── words.js
+        │       ├── sdk.js
+        │       └── polyfill.min.js
+        └── kwordle.sh
+      ```
+    </Note>
+  </Step>
+
+  <Step title="Safely eject your Kindle">
+    Safely eject or unmount your Kindle from your computer before disconnecting the USB cable.
+    
+    On Windows: Right-click the drive and select "Eject"
+    
+    On macOS: Drag the Kindle icon to the Trash or click the eject icon
+    
+    On Linux: Use the "Safely Remove" option in your file manager
+  </Step>
+
+  <Step title="Launch KWordle">
+    On your Kindle home screen, you should see a **KWordle** booklet.
+    
+    Tap on it to launch the game!
+    
+    <Note>
+      The first launch may take a few seconds as the Kindle initializes the application.
+    </Note>
+  </Step>
+</Steps>
+
+## What happens behind the scenes
+
+The `kwordle.sh` script performs these operations when first launched:
+
+```bash
+# Copies game files to Kindle's app directory
+cp -r "$SOURCE_DIR" "$TARGET_DIR"
+
+# Registers the app in Kindle's application database
+sqlite3 "$DB" <<EOF
+INSERT OR IGNORE INTO interfaces(interface) VALUES('application');
+INSERT OR IGNORE INTO handlerIds(handlerId) VALUES('xyz.kurizu.kwordle');
+# ... additional registration commands
+EOF
+
+# Launches the app using Mesquite framework
+lipc-set-prop com.lab126.appmgrd start app://xyz.kurizu.kwordle
+```
+
+This registers KWordle with the Kindle's Mesquite application framework and launches it in the WebKit-based browser.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="KWordle booklet doesn't appear">
+    - Make sure you copied both the `kwordle` folder AND the `kwordle.sh` file to the Documents folder
+    - Try restarting your Kindle: Menu > Settings > Device Options > Restart
+    - Check that you downloaded the correct version for your Kindle model
+  </Accordion>
+
+  <Accordion title="Game won't launch or shows errors">
+    - Verify your Kindle firmware version is 5.6.1.1 or newer
+    - Make sure all files from the zip were extracted correctly
+    - Try reinstalling by deleting the files and copying them again
+  </Accordion>
+
+  <Accordion title="Word lists not loading">
+    Check that the `js/words.js` file exists in the `kwordle` folder. This file contains all the word lists for different languages.
+    
+    The file should define:
+    ```javascript
+    var wordList = [
+      ["word1","word2","word3"], // English
+      // ... other languages
+    ];
+    ```
+  </Accordion>
+
+  <Accordion title="Keyboard not responding">
+    - Try using the on-screen keyboard instead of the physical keyboard
+    - Restart the app by closing and reopening the KWordle booklet
+    - Some special characters (Å, Ä, Ö for Swedish) may require the on-screen keyboard
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<Card
+  title="Quick start guide"
+  icon="rocket"
+  href="/quickstart"
+>
+  Learn how to play your first game and understand the visual indicators
+</Card>

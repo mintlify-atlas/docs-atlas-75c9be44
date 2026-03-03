@@ -1,0 +1,156 @@
+---
+title: Languages
+description: Explore supported languages in KWordle, learn how to switch between them, and understand keyboard layouts
+---
+
+## Supported Languages
+
+KWordle supports **8 different languages**, each with its own curated word list:
+
+<CardGroup cols={2}>
+  <Card title="English" icon="flag-usa">
+    Word list by Sean Patlan
+  </Card>
+  <Card title="French" icon="flag">
+    Word list by Simon Cambier
+  </Card>
+  <Card title="German" icon="flag">
+    Word list by Katherine Oelsner
+  </Card>
+  <Card title="Spanish" icon="flag">
+    Word list by jeheda
+  </Card>
+  <Card title="Portuguese" icon="flag">
+    Word list by Victor Santos
+  </Card>
+  <Card title="Swedish" icon="flag">
+    Word list by Jesper Olsson
+  </Card>
+  <Card title="Italian" icon="flag">
+    Word list by Napolux
+  </Card>
+  <Card title="Latin" icon="book">
+    Word list by LatinWord Net
+  </Card>
+</CardGroup>
+
+## Switching Languages
+
+To change the game language:
+
+1. Click the **Language** button (displays current language name)
+2. The language cycles through all available options
+3. The game automatically restarts with a new word in the selected language
+4. The keyboard layout updates to match the language (if applicable)
+
+<Tabs>
+  <Tab title="English">
+    Default language with standard A-Z keyboard layout.
+    
+    **Keyboard Layout:**
+    ```
+    Q W E R T Y U I O P
+    A S D F G H J K L
+    ✓ Z X C V B N M ←
+    ```
+  </Tab>
+  <Tab title="French">
+    French word list with standard keyboard layout.
+    
+    **Note:** Accented characters (é, ç, etc.) are replaced with non-accented variants (e, c, etc.) in the word lists.
+  </Tab>
+  <Tab title="German">
+    German word list with standard keyboard layout.
+    
+    **Note:** Accented characters (ä, ö, ü) are replaced with non-accented variants in the word lists.
+  </Tab>
+  <Tab title="Spanish">
+    Spanish word list with standard keyboard layout.
+    
+    **Note:** Accented characters (á, é, í, ó, ú, ñ) are replaced with non-accented variants in the word lists.
+  </Tab>
+  <Tab title="Portuguese">
+    Portuguese word list with standard keyboard layout.
+    
+    **Note:** Accented characters are replaced with non-accented variants in the word lists.
+  </Tab>
+  <Tab title="Swedish">
+    Swedish word list with **special keyboard layout** including Å, Ä, and Ö.
+    
+    **Keyboard Layout:**
+    ```
+    Q W E R T Y U I O P Å
+    A S D F G H J K L Ö Ä
+    ✓ Z X C V B N M ←
+    ```
+    
+    Swedish is the only language with additional special characters on the keyboard.
+  </Tab>
+  <Tab title="Italian">
+    Italian word list with standard keyboard layout.
+    
+    **Note:** Accented characters are replaced with non-accented variants in the word lists.
+  </Tab>
+  <Tab title="Latin">
+    Classical Latin word list with standard keyboard layout.
+    
+    Perfect for Latin scholars and language enthusiasts!
+  </Tab>
+</Tabs>
+
+## Word Lists
+
+Each language has two types of word lists:
+
+### Guessing Word List
+Contains the pool of words that can be selected as the target word. These are carefully curated common 5-letter words in each language.
+
+### Accepted Word List
+A comprehensive list of all valid 5-letter words that can be entered as guesses. This list is typically much larger than the guessing word list.
+
+<Note>
+When you switch languages, the game:
+- Immediately selects a new random word from that language's word list
+- Updates the keyboard layout (adds special characters for Swedish)
+- Resets the game board
+- Validates guesses against that language's accepted word list
+</Note>
+
+## Character Normalization
+
+To ensure compatibility with Kindle's keyboard and display:
+
+<AccordionGroup>
+  <Accordion title="Why are accented characters removed?">
+    Accented characters (like é, ñ, ä, ç) are replaced with their non-accented equivalents (e, n, a, c) in all word lists except Swedish special characters (Å, Ä, Ö).
+    
+    This ensures:
+    - Compatibility with standard Kindle keyboards
+    - Consistent gameplay across all languages
+    - No special input methods required
+  </Accordion>
+  
+  <Accordion title="How does Swedish handle special characters?">
+    Swedish is a special case because Å, Ä, and Ö are considered distinct letters in the Swedish alphabet, not accented variants.
+    
+    The keyboard dynamically adds these three letters when Swedish is selected, and they are fully supported in the word validation.
+  </Accordion>
+  
+  <Accordion title="What about other special characters?">
+    Letters like ñ (Spanish), ç (French/Portuguese), and ß (German) are normalized to their base forms (n, c, ss) to maintain compatibility.
+  </Accordion>
+</AccordionGroup>
+
+## Adding New Languages
+
+KWordle's source code supports adding new languages. To add a language:
+
+1. Prepare two word lists (guessing and accepted) in the required format
+2. Normalize accented characters (except for distinct alphabet letters)
+3. Add the lists to `words.js`
+4. Add the language name to the `languageList` array in `main.js`
+5. Add credits to the `showCredits()` function
+
+<Tip>
+Check [Hugo0's Wordle repo](https://github.com/Hugo0/wordle) on GitHub for word lists in different languages.
+</Tip>

@@ -1,0 +1,194 @@
+---
+title: Statistics
+description: Track your KWordle performance with detailed game statistics, view your progress, and understand the metrics
+---
+
+## Viewing Statistics
+
+To view your game statistics:
+
+1. Click the **Stats** button in the main menu
+2. A modal window opens displaying your complete statistics
+3. Click the **×** button to close the statistics modal
+
+<Note>
+Statistics are stored locally on your Kindle using localStorage, so they persist across sessions and game restarts.
+</Note>
+
+## Tracked Metrics
+
+KWordle tracks several key performance metrics:
+
+### Core Statistics
+
+<CardGroup cols={2}>
+  <Card title="Played" icon="gamepad">
+    Total number of games you've completed (won or lost).
+  </Card>
+  <Card title="Win %" icon="percent">
+    Your win percentage, calculated as:
+    
+    `(Games Won ÷ Games Played) × 100`
+    
+    Rounded to the nearest whole number.
+  </Card>
+  <Card title="Current Streak" icon="fire">
+    Number of consecutive games you've won without losing.
+    
+    Resets to 0 when you lose a game.
+  </Card>
+  <Card title="Max Streak" icon="trophy">
+    Your longest winning streak ever achieved.
+    
+    This record is never reset, even if your current streak ends.
+  </Card>
+</CardGroup>
+
+## Guess Distribution
+
+The guess distribution chart shows **how many attempts** it typically takes you to win:
+
+```
+Guess Distribution
+
+1  ██████████ 5
+2  ████████████████████ 12
+3  ███████████████████████████ 18
+4  ██████████████ 9
+5  ████████ 4
+6  ███ 2
+```
+
+This example shows:
+- Won 5 games on the 1st attempt
+- Won 12 games on the 2nd attempt
+- Won 18 games on the 3rd attempt (most common)
+- Won 9 games on the 4th attempt
+- Won 4 games on the 5th attempt
+- Won 2 games on the 6th attempt
+
+<Tip>
+A strong player will have most wins concentrated in attempts 2-4, showing consistent performance.
+</Tip>
+
+## How Statistics Are Updated
+
+### When You Win
+
+When you successfully guess the word:
+
+1. **Games Played** increases by 1
+2. **Games Won** increases by 1
+3. **Current Streak** increases by 1
+4. **Guess Distribution** for that attempt number increases by 1
+5. If Current Streak > Max Streak, **Max Streak** is updated
+
+### When You Lose
+
+When you use all 6 attempts without guessing:
+
+1. **Games Played** increases by 1
+2. **Current Streak** resets to 0
+3. No change to Games Won or Guess Distribution
+4. Max Streak remains unchanged
+
+<Warning>
+Statistics are only updated when a game is **completed** (won or lost). Starting a new game before finishing doesn't update statistics.
+</Warning>
+
+## Data Storage
+
+KWordle uses your Kindle's **localStorage** to save statistics:
+
+### Storage Format
+
+```json
+{
+  "gamesPlayed": 50,
+  "gamesWon": 42,
+  "currentStreak": 5,
+  "maxStreak": 12,
+  "guessDistribution": [3, 8, 15, 10, 5, 1]
+}
+```
+
+The `guessDistribution` array has 6 elements:
+- Index 0: Games won on attempt 1
+- Index 1: Games won on attempt 2
+- Index 2: Games won on attempt 3
+- Index 3: Games won on attempt 4
+- Index 4: Games won on attempt 5
+- Index 5: Games won on attempt 6
+
+### Persistence
+
+<AccordionGroup>
+  <Accordion title="Are statistics saved when I close the game?">
+    Yes! Statistics are automatically saved to localStorage after each completed game. They persist even if you:
+    - Close the KWordle booklet
+    - Restart your Kindle
+    - Update to a new version of KWordle
+  </Accordion>
+  
+  <Accordion title="Do statistics sync across devices?">
+    No, statistics are stored locally on each individual Kindle device. If you play on multiple Kindles, each will have separate statistics.
+  </Accordion>
+  
+  <Accordion title="Can I reset my statistics?">
+    There is no built-in reset button. Statistics would only reset if:
+    - You clear your Kindle's browser data/cache
+    - You delete the localStorage data manually
+    - You reinstall KWordle to a different location
+  </Accordion>
+  
+  <Accordion title="Are statistics language-specific?">
+    No, statistics track all games combined across all languages. Your performance in English, French, German, etc. all contribute to the same statistics.
+  </Accordion>
+</AccordionGroup>
+
+## Statistics Display
+
+The statistics modal shows:
+
+### Header Section
+Displays the four core metrics in a grid layout:
+- Games Played
+- Win Percentage
+- Current Streak  
+- Max Streak
+
+### Distribution Chart
+A visual bar chart showing your guess distribution:
+- Each row represents one attempt number (1-6)
+- Bar width is proportional to the number of wins
+- The number at the end of each bar shows the exact count
+- Bars are scaled relative to your most common winning attempt
+
+<Note>
+Bars have a minimum width of 7% to ensure visibility even for attempts with very few wins.
+</Note>
+
+## Interpreting Your Stats
+
+### Excellent Performance
+- Win % above 90%
+- Most wins on attempts 2-3
+- Current streak of 10+ games
+
+### Good Performance
+- Win % above 75%
+- Most wins on attempts 3-4
+- Consistent winning streaks of 5+ games
+
+### Room for Improvement
+- Win % below 60%
+- Most wins on attempts 5-6
+- Difficulty maintaining streaks
+
+<Tip>
+To improve your statistics:
+- Start with common vowels (A, E, I, O, U)
+- Use high-frequency consonants (R, S, T, N)
+- Eliminate letters strategically
+- Pay attention to letter position feedback
+</Tip>

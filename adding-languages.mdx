@@ -1,0 +1,152 @@
+---
+title: Adding Languages
+description: Step-by-step guide for adding new language support to KWordle
+---
+
+KWordle supports multiple languages. This guide shows you how to add a new language to the game.
+
+## Requirements
+
+To add a new language, you need two word lists:
+
+1. **Guessing word list** - A curated collection of common 5-letter words that will be selected as the target word
+2. **Accepted word list** - A comprehensive list of all valid 5-letter words that players can guess (usually much longer)
+
+These two lists can be the same, but having a smaller guessing list ensures players get reasonable words to guess.
+
+## Preparing the Word Lists
+
+### Handling Accented Characters
+
+If your language contains accented characters (like "é", "ç", "ñ", etc.), replace them with non-accented variants:
+
+- é → e
+- ç → c  
+- ñ → n
+- ü → u
+- å → a
+
+This ensures compatibility with standard keyboards and simplifies input handling.
+
+### Word List Format
+
+Arrange both word lists in this JavaScript array format:
+
+```javascript
+["word1","word2","word3","word4","word5"],
+```
+
+**Important**: Include the comma after the closing bracket - this is required for the array syntax.
+
+## Adding the Language
+
+<Steps>
+  <Step title="Open words.js">
+    Navigate to `kwordle/js/words.js` in your code editor.
+  </Step>
+
+  <Step title="Add to wordList array">
+    Find the `wordList` array declaration. Add your guessing word list just before the `];` closing line:
+
+    ```javascript
+    const wordList = [
+      ["aback","abase","abate",...], // English
+      ["abats","abces","abime",...], // French
+      // ... other languages ...
+      ["word1","word2","word3",...], // Your new language
+    ];
+    ```
+  </Step>
+
+  <Step title="Add to accepted array">
+    Find the `accepted` array declaration. Add your comprehensive word list just before the `];` closing line:
+
+    ```javascript
+    const accepted = [
+      ["aahed","aalii","aargh",...], // English
+      ["abats","abbes","abces",...], // French
+      // ... other languages ...
+      ["word1","word2","word3",...], // Your new language
+    ];
+    ```
+  </Step>
+
+  <Step title="Update languageList in main.js">
+    Open `main.js` and find the `languageList` array at line 15. Add your language name to the end:
+
+    ```javascript
+    const languageList = ["English", "French", "German", "Spanish", 
+                          "Portuguese", "Swedish", "Italian", "Latin", 
+                          "YourLanguage"];
+    ```
+  </Step>
+
+  <Step title="Add credits">
+    In `main.js`, find the `showCredits()` function around line 531. Add credit for your word list source:
+
+    ```javascript
+    function showCredits() {
+      var creditsModal = document.getElementById("credits-modal");
+      var creditsContent = document.getElementById("credits-content");
+      if (creditsModal && creditsContent) {
+        creditsContent.innerHTML = "<h2><font size=\"4\">KWordle</font></h2>" +
+          "<p><font size=\"2\">Game by <b><a href=\"https://kurizu.vercel.app/\">kurizu</a></b><br/>" +
+          // ... existing credits ...
+          "&nbsp;&nbsp;- YourLanguage: <a href=\"source-url\">Author Name</a><br/>" +
+          "</font></p>";
+        creditsModal.style.display = "block";
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Test the implementation">
+    1. Load the game in a browser or Kindle
+    2. Click the language button to cycle through languages
+    3. Verify your language appears and works correctly
+    4. Test with various words to ensure the word lists are properly loaded
+  </Step>
+</Steps>
+
+## Special Character Support
+
+If your language requires special characters (like Swedish's Å, Ä, Ö), you'll need to:
+
+1. **Update the keyboard initialization** in `initGame()` (main.js:72-77):
+
+```javascript
+var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+if(gameState.language === 8) { // Assuming index 8 is your language
+  letters.push("Å");
+  letters.push("Ä");
+  letters.push("Ö");
+}
+```
+
+2. **Update the keyboard layout** in `updateKeyboard()` (main.js:361-374) to add the special keys to appropriate rows.
+
+3. **Update the input validation regex** in `handleKeyInput()` (main.js:138) to accept your special characters:
+
+```javascript
+else if (/^[A-ZÅÄÖÑÜ]$/.test(key)) {
+  // Add letter to the current row
+  addLetter(key);
+}
+```
+
+## Finding Word Lists
+
+Check these resources for word lists in different languages:
+
+- [Hugo0's Wordle repo](https://github.com/Hugo0/wordle) - Multiple language word lists
+- [Katherine Oelsner's word-master](https://github.com/octokatherine/word-master) - German words
+- [Sean Patlan's wordle-words](https://github.com/seanpatlan/wordle-words) - English words
+- GitHub search for "wordle [language]" for other languages
+
+## Word List Guidelines
+
+- **Guessing list size**: 2,000-3,000 words is ideal
+- **Accepted list size**: 5,000-15,000 words recommended
+- **Avoid**: Proper nouns, abbreviations, vulgar words
+- **Include**: Common everyday words, verb forms, plurals
+- **Format**: All lowercase, no spaces or punctuation

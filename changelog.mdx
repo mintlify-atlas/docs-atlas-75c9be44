@@ -1,0 +1,278 @@
+---
+title: Changelog
+description: Version history and changes for KWordle
+---
+
+## Version History
+
+This page documents the evolution of KWordle, tracking new features, improvements, and bug fixes across all releases.
+
+## v1.5.0 - Current Release
+
+**Release Notes**: Wordle for Kindle with Swedish support and enhanced UI
+
+<Note>
+If you have an older Kindle (firmware 5.6.1.1 or earlier), download the zip with `-legacy` in its name.
+</Note>
+
+### Word List Improvements
+
+- **Swedish support**: Added Swedish word lists with Swedish keyboard layout including special characters (Å, Ä, Ö)
+- **Legacy support**: Full support for legacy devices (5.6.1.1) which don't support chromebar integration
+- **Separated word lists**: Now using separate proposed words (for guessing) and accepted words (for validation)
+- **Enhanced validation**: More comprehensive word validation for all supported languages
+
+### Languages Added in v1.5.0
+
+- **Swedish** - Added by [Jesper Olsson](https://github.com/jsprolsson)
+  - Includes Swedish keyboard layout with Å, Ä, Ö keys
+  - Comprehensive Swedish word lists
+
+### UI Enhancements
+
+- **Credits dialog added**: New modal showing contributors and word list sources
+  - Accessible via Credits button
+  - Lists all contributors and word list authors
+- **Updated visuals**: Changed icon and page header for better Kindle display
+  - Optimized for black & white e-ink screens
+  - Improved contrast and readability
+- **Improved keyboard layout**: 
+  - Increased space between keyboard buttons for easier touch input on e-ink displays
+  - Replaced "ENTER" text with checkmark symbol (✓) for cleaner interface
+  - Better visual indicators for letter states
+- **Chromebar integration**: Added KWordle chromebar for modern devices
+  - Custom app title in top navigation
+  - System menu integration with "More" button
+  - Reload option in system menu
+  - Close button integration
+
+### Performance and Technical
+
+- **Code cleanup**: Refactored several functions for better readability and performance
+- **Optimized for Kindle**: Further optimizations for e-ink display and input handling
+  - Reduced screen refresh operations
+  - Improved touch response timing
+- **ES5 compatibility**: Maintains ES5 JavaScript for legacy device support
+- **Polyfill updates**: Updated polyfills for better browser compatibility
+
+### Installation
+
+1. Download the latest release from GitHub
+2. Choose `kwordle.zip` for modern devices or `kwordle-legacy.zip` for firmware 5.6.1.1 or older
+3. Copy the `kwordle` folder and `kwordle.sh` to your Kindle's **Documents** folder
+4. Disconnect your Kindle and open the **KWordle** booklet
+
+### Contributors
+
+Special thanks to:
+- **Penguin** - Testing and debugging
+- **Kashortie** - Testing and feedback
+- Community testers who helped make this release possible
+
+---
+
+## Previous Versions
+
+### v1.4.0 - Portuguese Support
+
+**Highlights**: Added Portuguese language support
+
+#### New Features
+
+- **Portuguese language**: Complete Portuguese word lists
+  - Word lists by [Victor Santos](https://github.com/tilnoene)
+  - Accessible via language selector
+
+#### Improvements
+
+- Enhanced language switching interface
+- Word list optimization for faster loading
+- Improved validation for non-English languages
+
+---
+
+### v1.3.0 - Spanish Support
+
+**Highlights**: Added Spanish language support
+
+#### New Features
+
+- **Spanish language**: Complete Spanish word lists
+  - Word lists by [jeheda](https://github.com/jeheda)
+  - Seamless language switching
+
+#### Improvements
+
+- Refined touch targets for better e-ink interaction
+- Performance optimizations for older Kindle models
+
+---
+
+### v1.2.0 - Multi-language Support
+
+**Highlights**: Initial multi-language implementation
+
+#### New Features
+
+- **French language support**: Complete French word lists
+  - Word lists by [Simon Cambier](https://github.com/scambier/mo-mo-motus)
+- **German language support**: Complete German word lists
+  - Word lists by [Katherine Oelsner](https://github.com/octokatherine/word-master)
+- **Language selector**: Button to switch between languages
+  - Each language has dedicated word lists
+  - Game resets when changing language
+
+#### Technical Changes
+
+- Refactored word list structure to support multiple languages
+- Separated proposed and accepted word lists
+- Added language state to game persistence
+
+---
+
+### v1.1.0 - Statistics & Improvements
+
+**Highlights**: Statistics tracking and UI refinements
+
+#### New Features
+
+- **Statistics tracking**: Track your game performance
+  - Games played and won
+  - Current and max win streaks
+  - Guess distribution graph
+  - Stored in localStorage
+- **Statistics modal**: View detailed statistics
+  - Win percentage calculation
+  - Visual guess distribution bars
+
+#### UI Improvements
+
+- Enhanced keyboard visual feedback
+- Improved letter state indicators for e-ink displays:
+  - ■ (filled square) for correct position
+  - □ (empty square) for wrong position  
+  - × (cross) for absent letters
+- Better message display timing
+- Refined grid layout
+
+#### Bug Fixes
+
+- Fixed localStorage persistence issues
+- Improved touch response on certain Kindle models
+- Corrected word validation edge cases
+
+---
+
+### v1.0.0 - Initial Release
+
+**Highlights**: First public release of KWordle
+
+#### Core Features
+
+- **Wordle gameplay**: Classic 6-attempt word guessing game
+  - 5-letter word puzzles
+  - Color-coded feedback adapted for black & white displays
+  - Keyboard input support (both touch and physical)
+
+- **Kindle optimization**: Specifically designed for e-ink displays
+  - WebKit browser compatibility
+  - ES5 JavaScript for older Kindle models
+  - Polyfills for browser compatibility
+  - Optimized screen refresh patterns
+
+- **English word list**: Comprehensive 5-letter English words
+  - Word lists by [Sean Patlan](https://github.com/seanpatlan/wordle-words)
+  - Separated guessing and validation lists
+
+- **Touch keyboard**: On-screen keyboard interface
+  - QWERTY layout
+  - Enter and Backspace keys
+  - Visual feedback for letter states
+
+- **Game state management**: 
+  - Current game progress tracking
+  - Letter state tracking (correct, present, absent)
+  - Attempt counter
+  - Win/loss detection
+
+#### Technical Implementation
+
+- **Installation script**: `kwordle.sh` for Kindle integration
+  - Copies files to `/var/local/mesquite/kwordle`
+  - Registers app in `appreg.db`
+  - Launches via LIPC (Lab126 IPC)
+  - App ID: `xyz.kurizu.kwordle`
+
+- **Polyfill support**: Ensures compatibility with older browsers
+- **localStorage**: For future statistics and settings
+- **Responsive layout**: Adapts to Kindle screen sizes
+
+#### Credits
+
+- **Game by**: [kurizu](https://kurizu.vercel.app/)
+- **Illusion engine by**: [Penguins184](https://github.com/polish-penguin-dev/)
+- **Additional development by**: [kbarni](https://github.com/kbarni)
+
+---
+
+## Supported Languages Timeline
+
+Language support has expanded significantly since the initial release:
+
+| Version | Languages | Total |
+|---------|-----------|-------|
+| v1.0.0  | English | 1 |
+| v1.2.0  | English, French, German | 3 |
+| v1.3.0  | English, French, German, Spanish | 4 |
+| v1.4.0  | English, French, German, Spanish, Portuguese | 5 |
+| v1.5.0  | English, French, German, Spanish, Portuguese, Swedish, Italian, Latin | 8 |
+
+## Technical Evolution
+
+### Browser Compatibility
+
+- **v1.0.0**: Basic ES5 support with polyfills
+- **v1.5.0**: Enhanced polyfills, chromebar integration, legacy build separation
+
+### Display Optimization
+
+- **v1.0.0**: Basic e-ink optimization
+- **v1.1.0**: Improved indicators (■, □, ×)
+- **v1.5.0**: Refined spacing, better contrast, optimized refresh patterns
+
+### Installation Methods
+
+- **v1.0.0**: Single build with LIPC launcher
+- **v1.5.0**: Dual builds (legacy and modern) for different firmware versions
+
+## Future Development
+
+KWordle continues to evolve based on community feedback. Potential future enhancements may include:
+
+- Additional language support
+- Customizable word lengths
+- Hard mode options
+- Daily challenge mode
+- Enhanced statistics and graphs
+
+<Note>
+To request features or report issues, visit the [KWordle GitHub repository](https://github.com/crizmo/KWordle).
+</Note>
+
+## Upgrade Guide
+
+### From Any Version to v1.5.0
+
+1. **Check your firmware version**: Settings > Device Info > Firmware Version
+2. **Choose the correct build**:
+   - Firmware 5.6.1.1 or older: Download `kwordle-legacy.zip`
+   - Firmware newer than 5.6.1.1: Download `kwordle.zip`
+3. **Backup statistics** (optional): Note down your stats from the Stats button
+4. **Remove old version**: Delete `kwordle` folder and `kwordle.sh` from Documents
+5. **Install new version**: Copy new files to Documents folder
+6. **Restart Kindle**: Hold power button for 40 seconds
+7. **Launch KWordle**: Open the booklet from your library
+
+<Warning>
+Make sure you download the correct build (legacy or modern) for your firmware version. Using the wrong build may cause compatibility issues.
+</Warning>

@@ -1,0 +1,111 @@
+---
+title: Gameplay
+description: Learn how to play KWordle, understand the game rules, visual indicators, and scoring system
+---
+
+## How to Play
+
+KWordle is a word-guessing game where you try to guess a secret 5-letter word in 6 attempts or fewer.
+
+### Game Rules
+
+1. **Target**: Guess a random 5-letter word selected from the word list
+2. **Attempts**: You have 6 attempts to guess the correct word
+3. **Valid Words**: Only words from the accepted word list are allowed as guesses
+4. **Feedback**: After each guess, you receive visual feedback for each letter
+
+### Making a Guess
+
+- Type 5 letters using the on-screen keyboard or your Kindle's physical keyboard
+- Press the **✓** (Enter) key to submit your guess
+- Use the **←** (Backspace) key to delete letters
+
+<Note>
+You must enter exactly 5 letters before submitting a guess. If you try to submit with fewer letters, you'll see a "Not enough letters" message.
+</Note>
+
+## Visual Indicators
+
+KWordle uses special indicators optimized for Kindle's black and white e-ink display:
+
+<AccordionGroup>
+  <Accordion title="■ Filled Square - Correct Position">
+    The letter is in the word **and** in the correct position.
+    
+    Example: If the target word is "CRANE" and you guess "CRATE", the letters C, R, and A will show ■ because they're in the correct positions.
+  </Accordion>
+
+  <Accordion title="□ Empty Square - Wrong Position">
+    The letter is in the word **but** in the wrong position.
+    
+    Example: If the target word is "CRANE" and you guess "TREAD", the letters R, E, and A will show □ because they exist in the word but are in different positions.
+  </Accordion>
+
+  <Accordion title="× Cross - Not in Word">
+    The letter is **not** in the word at all.
+    
+    Example: If the target word is "CRANE" and you guess "STORM", the letters S, T, O, and M will show × because they don't appear in the target word.
+  </Accordion>
+</AccordionGroup>
+
+### Indicator Key
+
+The game displays a helpful key above the keyboard:
+
+```
+■ = Correct spot    □ = Wrong spot    × = Not in word
+```
+
+## Winning and Losing
+
+### Winning
+
+You win when you guess the correct word within 6 attempts. The game will:
+- Display "You won!" message
+- Update your statistics
+- Track which attempt you won on for the guess distribution chart
+
+### Losing
+
+You lose if you use all 6 attempts without guessing the word. The game will:
+- Display "Game over! The word was [WORD]" message
+- Show you what the correct word was
+- Update your statistics (current streak resets to 0)
+
+## Scoring System
+
+KWordle tracks several metrics to measure your performance:
+
+- **Games Played**: Total number of games completed
+- **Games Won**: Total number of games you've won
+- **Win Percentage**: (Games Won / Games Played) × 100
+- **Current Streak**: Consecutive games won without losing
+- **Max Streak**: Your longest winning streak ever
+- **Guess Distribution**: How many games you won on each attempt (1-6)
+
+<Tip>
+Try to guess the word in as few attempts as possible to improve your guess distribution and maintain your winning streak!
+</Tip>
+
+## Game States
+
+The game tracks the following states for each letter cell:
+
+- **Empty**: No letter entered yet
+- **Filled**: Letter entered but not yet submitted
+- **Correct**: Letter is correct and in the right position (■)
+- **Present**: Letter is in the word but wrong position (□)
+- **Absent**: Letter is not in the word (×)
+- **Unused**: Letter not yet guessed (shown on keyboard)
+
+## Starting a New Game
+
+Click the **New Game** button to:
+- Select a new random word
+- Reset the game board
+- Clear all previous guesses
+- Keep your statistics intact
+
+<Warning>
+Starting a new game before completing the current game will count as an unfinished game and may affect your statistics.
+</Warning>

@@ -1,0 +1,138 @@
+---
+title: Compatibility
+description: Supported Kindle devices, firmware versions, and browser compatibility
+---
+
+## Supported Kindle Devices
+
+KWordle is designed to work on Kindle e-readers with WebKit-based browsers. The game supports both legacy and modern Kindle devices with different builds optimized for each.
+
+### Modern Kindle Devices
+
+For Kindle devices running firmware **newer than 5.6.1.1**, use the standard `kwordle.zip` build. These devices support:
+
+- Full chromebar integration with system menu
+- Enhanced UI features including custom app controls
+- Optimized mesquite launcher integration
+- Reload functionality via system menu
+
+**Supported features:**
+- Native chromebar with KWordle branding
+- System menu integration (More button)
+- App reload via system menu
+- Full keyboard input support
+- Touch screen keyboard
+- localStorage for statistics tracking
+
+### Legacy Kindle Devices
+
+<Warning>
+For Kindle devices running firmware **5.6.1.1 or older**, you must use the `kwordle-legacy.zip` build. The standard build will not work on these devices.
+</Warning>
+
+Legacy devices have limited support for:
+- Chromebar functionality (not available)
+- System menu integration (not available)
+- Basic game functionality (fully supported)
+
+**Supported features:**
+- Core Wordle gameplay
+- On-screen keyboard
+- Physical keyboard input
+- localStorage for statistics
+- All language support
+
+<Note>
+Both builds provide the same core gameplay experience. The differences are primarily in the system integration and UI chrome features.
+</Note>
+
+## Browser Compatibility
+
+KWordle is optimized for Kindle's WebKit-based browser and includes several compatibility measures:
+
+### JavaScript Compatibility
+
+- **ES5 JavaScript**: The game uses ES5 syntax for maximum compatibility with older Kindle models
+- **Polyfills included**: The game includes `polyfill.min.js` to ensure modern JavaScript features work on older browsers
+- **No transpilation required**: All code runs natively on Kindle browsers
+
+### Display Optimization
+
+- **Black & white display**: Special indicators designed for e-ink screens
+  - ■ (filled square) for correct position
+  - □ (empty square) for wrong position  
+  - × (cross) for absent letters
+- **E-ink refresh optimization**: UI updates designed to minimize screen flicker
+- **Touch-friendly controls**: Increased spacing between keyboard buttons
+
+### Storage Requirements
+
+- **localStorage**: Required for statistics tracking and game state
+- **Minimal storage**: Game files are optimized for Kindle's limited storage
+- **No internet required**: All word lists are bundled, offline play supported
+
+## Installation Requirements
+
+### File Structure
+
+The game requires the following structure in your Kindle's **Documents** folder:
+
+```
+Documents/
+├── kwordle/
+│   ├── index.html
+│   ├── main.js
+│   ├── main.css
+│   ├── wordle-icon.png
+│   └── js/
+│       ├── polyfill.min.js
+│       ├── sdk.js
+│       └── words.js
+└── kwordle.sh
+```
+
+### Firmware Version Check
+
+To check your Kindle firmware version:
+
+1. Go to **Settings** > **Device Info** or **Device Options**
+2. Look for **Firmware Version** or **Software Version**
+3. If the version is **5.6.1.1 or older**, download `kwordle-legacy.zip`
+4. If the version is **newer than 5.6.1.1**, download `kwordle.zip`
+
+<Warning>
+Using the wrong build for your firmware version may result in the game not loading or displaying incorrectly.
+</Warning>
+
+## Known Limitations
+
+### All Devices
+
+- **No color support**: Game is optimized for black & white e-ink displays
+- **Refresh rate**: E-ink displays have slower refresh rates than LCD screens
+- **Touch accuracy**: E-ink touch screens may be less responsive than modern tablets
+
+### Legacy Devices (5.6.1.1 and older)
+
+- **No chromebar**: Top navigation bar and system menu not available
+- **Manual reload**: Must restart the booklet to reload the game
+- **Limited debugging**: Older browsers have fewer developer tools
+
+### Modern Devices
+
+- **Battery usage**: Chromebar features may use slightly more battery
+- **Memory**: System integration requires additional memory overhead
+
+## Testing and Verification
+
+After installation, verify your KWordle installation:
+
+1. Open the **KWordle** booklet on your Kindle
+2. Check that the game loads with a 6×5 letter grid
+3. Test the on-screen keyboard by tapping letters
+4. Try entering a 5-letter word and pressing Enter
+5. Verify that statistics are saved by checking the Stats button
+
+<Note>
+If you experience issues, see the [Troubleshooting](/troubleshooting) page for common solutions.
+</Note>

@@ -1,0 +1,93 @@
+---
+title: Welcome to KWordle
+description: Wordle for Kindle e-readers - Guess the word in 6 attempts with optimized black & white display indicators
+---
+
+## Wordle for your Kindle
+
+KWordle brings the popular word-guessing game to your Kindle e-reader with a specially optimized interface for black & white displays. Challenge yourself to guess 5-letter words in 6 attempts or less.
+
+## Key features
+
+<CardGroup cols={2}>
+  <Card
+    title="E-ink optimized"
+    icon="book-open"
+  >
+    Special indicators (■, □, ×) designed specifically for Kindle's black & white display provide clear visual feedback
+  </Card>
+  <Card
+    title="8 languages supported"
+    icon="language"
+  >
+    Play in English, French, German, Spanish, Portuguese, Swedish, Italian, or Latin with dedicated word lists
+  </Card>
+  <Card
+    title="Track your progress"
+    icon="chart-line"
+  >
+    Game statistics stored locally track your wins, streaks, and guess distribution
+  </Card>
+  <Card
+    title="Keyboard support"
+    icon="keyboard"
+  >
+    Use both the on-screen keyboard and your Kindle's physical keyboard for seamless gameplay
+  </Card>
+</CardGroup>
+
+## How the game works
+
+KWordle follows the classic Wordle gameplay:
+
+1. **Guess a 5-letter word** - You have 6 attempts to find the target word
+2. **Get visual feedback** - After each guess, see which letters are correct:
+   - **■** (filled square) = Letter is in the correct position
+   - **□** (empty square) = Letter is in the word but wrong position  
+   - **×** (cross) = Letter is not in the word
+3. **Win the game** - Use the clues to deduce the word before running out of attempts
+
+<Note>
+  KWordle uses ES5 JavaScript and includes polyfills for maximum compatibility with older Kindle models running firmware 5.6.1.1 or newer.
+</Note>
+
+## Technical highlights
+
+- **WebKit-based**: Runs in Kindle's built-in browser using the Mesquite application framework
+- **Optimized for e-ink**: Designed for Kindle's screen size and refresh characteristics
+- **Offline gameplay**: All word lists stored locally - no internet connection required
+- **Persistent stats**: Game statistics saved to localStorage
+
+## Quick start
+
+<CardGroup cols={2}>
+  <Card
+    title="Installation"
+    icon="download"
+    href="/installation"
+  >
+    Step-by-step guide to install KWordle on your Kindle device
+  </Card>
+  <Card
+    title="Quick start guide"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Get playing your first game in minutes
+  </Card>
+</CardGroup>
+
+<Warning>
+  Make sure to download the correct version for your Kindle:
+  - **Legacy models** (firmware 5.6.1.1 or older): Use `kwordle-legacy.zip`
+  - **Modern models**: Use `kwordle.zip`
+</Warning>
+
+## Credits
+
+KWordle is built and maintained by:
+- **Game**: [kurizu](https://kurizu.vercel.app/)
+- **Illusion engine**: [Penguins184](https://github.com/polish-penguin-dev/)
+- **Additional development**: [kbarni](https://github.com/kbarni)
+
+Word lists provided by the community - see the Credits page for full attribution.

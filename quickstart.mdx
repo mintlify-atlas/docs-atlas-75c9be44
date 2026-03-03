@@ -1,80 +1,250 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quickstart
+description: Get started playing KWordle in minutes - your first game guide
 ---
 
-## Get started in three steps
+## Your first game
 
-Get your documentation site running locally and make your first customization.
+Once you've [installed KWordle](/installation), you're ready to play! Here's how to start guessing your first word.
 
-### Step 1: Set up your local environment
+## The game interface
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+When you open KWordle, you'll see:
+- A **6×5 letter grid** where your guesses appear
+- An **on-screen keyboard** for touch input
+- **Control buttons** at the bottom (New Game, Language, Stats, Credits)
+
+<Steps>
+  <Step title="Make your first guess">
+    Start by typing a 5-letter word using either:
+    - Your Kindle's **physical keyboard** (if available)
+    - The **on-screen keyboard** by tapping letters
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    Each letter you type appears in the current row of the grid.
+  </Step>
+
+  <Step title="Submit your guess">
+    Once you've entered all 5 letters, press:
+    - **Enter** on the physical keyboard, or
+    - The **✓** button on the on-screen keyboard
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+    The game will check if your word is valid. If it's not in the word list, you'll see an error message.
+  </Step>
 
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+  <Step title="Read the feedback">
+    After submitting, each letter shows an indicator:
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    | Indicator | Meaning |
+    |-----------|---------|
+    | ■ (filled square) | Letter is correct and in the right position |
+    | □ (empty square) | Letter is in the word but wrong position |
+    | × (cross) | Letter is not in the word at all |
+    
+    Use this feedback to make your next guess!
+  </Step>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+  <Step title="Keep guessing">
+    You have 6 total attempts to guess the word. Each guess should use the information from previous attempts to get closer to the answer.
+  </Step>
+</Steps>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+## How the game checks your guess
 
-### Step 3: Go live
+KWordle uses a two-pass algorithm to check your guesses:
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+```javascript
+// From main.js:243-275
+// First pass: Mark exact matches (correct position)
+for (var i = 0; i < guess.length; i++) {
+  if (guess[i] === targetWord[i]) {
+    currentRow[i].state = states.correct;
+    letterCounts[guess[i]]--;
+  }
+}
 
-## Next steps
+// Second pass: Mark present letters (wrong position)
+for (var i = 0; i < guess.length; i++) {
+  if (currentRow[i].state !== states.correct) {
+    if (letterCounts[guess[i]] > 0) {
+      currentRow[i].state = states.present;
+      letterCounts[guess[i]]--;
+    } else {
+      currentRow[i].state = states.absent;
+    }
+  }
+}
+```
 
-Now that you have your docs running, explore these key features:
+This ensures letters are marked correctly even when the target word has duplicate letters.
 
-<CardGroup cols={2}>
+## Example game
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+Let's say the target word is **CRANE**. Here's how a game might progress:
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+| Attempt | Word | Feedback | What you learn |
+|---------|------|----------|----------------|
+| 1 | STARE | S×, T×, A□, R□, E□ | A, R, E are in the word but wrong positions |
+| 2 | TRACE | T×, R□, A□, C■, E■ | C and E are correct! R and A still wrong positions |
+| 3 | CRANE | C■, R■, A■, N■, E■ | You win! All letters correct |
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+## Input methods
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+<Tabs>
+  <Tab title="On-screen keyboard">
+    The on-screen keyboard has three rows:
+    
+    ```
+    Q W E R T Y U I O P
+     A S D F G H J K L
+      Z X C V B N M ✓ ←
+    ```
+    
+    - Tap letters to add them to your guess
+    - Tap **✓** (checkmark) to submit your guess
+    - Tap **←** (backspace) to delete the last letter
+    
+    <Tip>The keyboard buttons have extra spacing to make them easier to tap on Kindle's e-ink touchscreen.</Tip>
+  </Tab>
 
+  <Tab title="Physical keyboard">
+    If your Kindle has a physical keyboard:
+    
+    - Type **A-Z** to enter letters
+    - Press **Enter** to submit your guess
+    - Press **Backspace** to delete the last letter
+    
+    ```javascript
+    // From main.js:567-586
+    document.addEventListener("keydown", function(event) {
+      if (gameState.gameOver) return;
+      
+      var key = event.key.toUpperCase();
+      
+      if (key === "ENTER") {
+        submitGuess();
+      } else if (key === "BACKSPACE") {
+        deleteLetter();
+      } else if (key.length === 1 && key >= "A" && key <= "Z") {
+        addLetter(key);
+      }
+    });
+    ```
+  </Tab>
+</Tabs>
+
+## Supported languages
+
+KWordle supports 8 languages! Tap the **Language** button to switch:
+
+<CardGroup cols={4}>
+  <Card title="English" icon="flag-usa">
+    2,315 words
+  </Card>
+  <Card title="French" icon="flag">
+    1,476 words
+  </Card>
+  <Card title="German" icon="flag">
+    3,234 words
+  </Card>
+  <Card title="Spanish" icon="flag">
+    2,683 words
+  </Card>
+  <Card title="Portuguese" icon="flag">
+    2,518 words
+  </Card>
+  <Card title="Swedish" icon="flag">
+    2,089 words
+  </Card>
+  <Card title="Italian" icon="flag">
+    1,897 words
+  </Card>
+  <Card title="Latin" icon="book">
+    1,234 words
+  </Card>
 </CardGroup>
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+For more details on language support, see the [Languages](/languages) page.
 </Note>
+
+## Tracking your progress
+
+KWordle automatically saves your game statistics including:
+- Games played
+- Win percentage
+- Current win streak
+- Longest win streak
+- Guess distribution
+
+Tap the **Stats** button anytime to see your progress!
+
+```javascript
+// Statistics are stored in localStorage
+var statistics = {
+  gamesPlayed: 0,
+  gamesWon: 0,
+  currentStreak: 0,
+  maxStreak: 0,
+  guessDistribution: [0, 0, 0, 0, 0, 0] // Attempts 1-6
+};
+```
+
+## Tips for success
+
+<AccordionGroup>
+  <Accordion title="Start with common letters" icon="lightbulb">
+    Use words with common vowels (A, E, I, O, U) and consonants (R, S, T, L, N) in your first guesses to maximize information.
+  </Accordion>
+
+  <Accordion title="Use all the feedback" icon="magnifying-glass">
+    Pay attention to both correct positions (■) and wrong positions (□). A letter marked with □ means you need to move it to a different position.
+  </Accordion>
+
+  <Accordion title="Eliminate letters" icon="circle-xmark">
+    Letters marked with × are not in the word at all. Don't use them in future guesses.
+  </Accordion>
+
+  <Accordion title="Consider letter frequency" icon="chart-bar">
+    Some letters appear more often in 5-letter words. The most common are: E, A, R, O, T, L, I, S, N.
+  </Accordion>
+
+  <Accordion title="Take your time" icon="clock">
+    There's no time limit! Think carefully about each guess to use your 6 attempts wisely.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Learn gameplay details"
+    icon="gamepad"
+    href="/gameplay"
+  >
+    Understand the complete rules and scoring system
+  </Card>
+
+  <Card
+    title="Switch languages"
+    icon="language"
+    href="/languages"
+  >
+    Play in French, German, Spanish, and more
+  </Card>
+
+  <Card
+    title="View statistics"
+    icon="chart-line"
+    href="/statistics"
+  >
+    Track your performance and improve your skills
+  </Card>
+
+  <Card
+    title="Explore controls"
+    icon="keyboard"
+    href="/controls"
+  >
+    Master all input methods and keyboard shortcuts
+  </Card>
+</CardGroup>

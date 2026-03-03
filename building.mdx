@@ -1,0 +1,288 @@
+---
+title: Building
+description: How to build releases and create distribution packages for KWordle
+---
+
+This guide covers building KWordle for distribution on Kindle e-readers.
+
+## Distribution Files
+
+KWordle is distributed as a ZIP file containing:
+
+1. `kwordle/` directory - All application files
+2. `kwordle.sh` - Installation script for registering the app with Kindle
+
+## File Structure for Distribution
+
+```
+kwordle.zip
+├── kwordle/
+│   ├── index.html
+│   ├── main.js
+│   ├── main.css
+│   ├── config.xml
+│   ├── wordle-icon.png
+│   └── js/
+│       ├── words.js
+│       ├── polyfill.min.js
+│       └── sdk.js
+└── kwordle.sh
+```
+
+## Building Process
+
+### Standard Build (Modern Kindles)
+
+For Kindle firmware 5.7.0 and newer:
+
+```bash
+# Create the distribution directory
+mkdir -p dist/kwordle/js
+
+# Copy application files
+cp index.html dist/kwordle/
+cp main.js dist/kwordle/
+cp main.css dist/kwordle/
+cp config.xml dist/kwordle/
+cp wordle-icon.png dist/kwordle/
+
+# Copy JavaScript dependencies
+cp js/words.js dist/kwordle/js/
+cp js/polyfill.min.js dist/kwordle/js/
+cp js/sdk.js dist/kwordle/js/
+
+# Copy installation script
+cp kwordle.sh dist/
+
+# Create ZIP file
+cd dist
+zip -r ../kwordle.zip kwordle/ kwordle.sh
+cd ..
+```
+
+### Legacy Build (Older Kindles)
+
+For Kindle firmware 5.6.1.1 and older, you may need additional polyfills or compatibility adjustments:
+
+```bash
+# Same as standard build, but ensure:
+# 1. No ES6+ features in any JavaScript files
+# 2. Additional polyfills for older WebKit
+# 3. More conservative CSS (avoid newer properties)
+
+zip -r kwordle-legacy.zip kwordle/ kwordle.sh
+```
+
+## Installation Script Details
+
+The `kwordle.sh` script performs these steps:
+
+### 1. Copy Files to System Directory
+
+```bash
+SOURCE_DIR="/mnt/us/documents/kwordle"
+TARGET_DIR="/var/local/mesquite/kwordle"
+
+if [ -d "$SOURCE_DIR" ]; then
+    if [ -d "$TARGET_DIR" ]; then
+        rm -rf "$TARGET_DIR"
+    fi
+    cp -r "$SOURCE_DIR" "$TARGET_DIR"
+else
+    exit 1
+fi
+```
+
+### 2. Register with Kindle App Registry
+
+```bash
+DB="/var/local/appreg.db"
+APP_ID="xyz.kurizu.kwordle"
+
+sqlite3 "$DB" <<EOF
+INSERT OR IGNORE INTO interfaces(interface) VALUES('application');
+
+INSERT OR IGNORE INTO handlerIds(handlerId) VALUES('$APP_ID');
+
+INSERT OR REPLACE INTO properties(handlerId,name,value) 
+  VALUES('$APP_ID','lipcId','$APP_ID');
+INSERT OR REPLACE INTO properties(handlerId,name,value) 
+  VALUES('$APP_ID','command','/usr/bin/mesquite -l $APP_ID -c file://$TARGET_DIR/');
+INSERT OR REPLACE INTO properties(handlerId,name,value) 
+  VALUES('$APP_ID','supportedOrientation','U');
+EOF
+```
+
+This:
+- Registers the app interface
+- Creates a handler ID
+- Sets the LIPC ID for IPC communication
+- Defines the launch command using Mesquite
+- Sets supported orientation to "U" (upright)
+
+### 3. Launch the Application
+
+```bash
+nohup lipc-set-prop com.lab126.appmgrd start app://$APP_ID >/dev/null 2>&1 &
+```
+
+## Testing Builds
+
+### Testing on Kindle
+
+1. **Extract the ZIP** to a temporary folder
+2. **Connect Kindle** via USB
+3. **Copy files** to Documents folder:
+   ```
+   /mnt/us/documents/kwordle/
+   /mnt/us/documents/kwordle.sh
+   ```
+4. **Open KWordle booklet** on Kindle to run the installation script
+5. **Launch the app** from the app menu or via:
+   ```bash
+   lipc-set-prop com.lab126.appmgrd start app://xyz.kurizu.kwordle
+   ```
+
+### Testing in Browser
+
+For quick development testing:
+
+```bash
+# Start a local web server
+python3 -m http.server 8000
+
+# Open in browser
+open http://localhost:8000/index.html
+```
+
+Note: Kindle-specific features (Chromebar, LIPC) won't work in browser.
+
+## Version Management
+
+### Updating Version Number
+
+Update the version in multiple places:
+
+1. **config.xml** - Widget version attribute:
+   ```xml
+   <widget id="xyz.kurizu.kwordle" version="1.5.0" ...>
+   ```
+
+2. **index.html** - Footer display:
+   ```html
+   <div class="footer">
+     <p>KWordle v1.5.0 - Wordle for Kindle</p>
+   </div>
+   ```
+
+## Release Checklist
+
+Before creating a release:
+
+- [ ] Test on at least one Kindle device
+- [ ] Verify all languages load correctly
+- [ ] Check statistics persistence
+- [ ] Test physical keyboard input
+- [ ] Test virtual keyboard
+- [ ] Verify Chromebar menu works
+- [ ] Check that game resets properly
+- [ ] Validate word lists are complete
+- [ ] Update version numbers
+- [ ] Update credits if needed
+- [ ] Test both standard and legacy builds
+
+## Distribution
+
+### GitHub Releases
+
+1. Create a new release on GitHub
+2. Upload both ZIP files:
+   - `kwordle.zip` - Standard build
+   - `kwordle-legacy.zip` - Legacy build
+3. Add release notes:
+   - New features
+   - Bug fixes
+   - Known issues
+   - Installation instructions
+
+### Installation Instructions for Users
+
+Include these instructions with releases:
+
+1. Download the appropriate ZIP file:
+   - Legacy models (5.6.1.1 or older): `kwordle-legacy.zip`
+   - Newer models: `kwordle.zip`
+2. Unzip the downloaded file
+3. Connect Kindle to computer via USB
+4. Copy `kwordle` folder and `kwordle.sh` to Documents folder
+5. Safely eject Kindle
+6. On Kindle, open the **KWordle** booklet to start playing
+
+## Build Automation
+
+You can automate the build process with a script:
+
+```bash
+#!/bin/bash
+# build.sh - Build KWordle distribution packages
+
+VERSION="1.5.0"
+BUILD_DIR="build"
+DIST_DIR="dist"
+
+# Clean previous builds
+rm -rf $BUILD_DIR $DIST_DIR
+mkdir -p $BUILD_DIR/kwordle/js
+mkdir -p $DIST_DIR
+
+echo "Building KWordle v$VERSION..."
+
+# Copy files
+cp index.html $BUILD_DIR/kwordle/
+cp main.js $BUILD_DIR/kwordle/
+cp main.css $BUILD_DIR/kwordle/
+cp config.xml $BUILD_DIR/kwordle/
+cp wordle-icon.png $BUILD_DIR/kwordle/
+cp js/*.js $BUILD_DIR/kwordle/js/
+cp kwordle.sh $BUILD_DIR/
+
+# Create standard build
+cd $BUILD_DIR
+zip -r ../dist/kwordle-v$VERSION.zip kwordle/ kwordle.sh
+echo "✓ Created dist/kwordle-v$VERSION.zip"
+
+# Create legacy build (same files, different name for clarity)
+cp ../dist/kwordle-v$VERSION.zip ../dist/kwordle-legacy-v$VERSION.zip
+echo "✓ Created dist/kwordle-legacy-v$VERSION.zip"
+
+cd ..
+echo "Build complete!"
+```
+
+Make it executable:
+
+```bash
+chmod +x build.sh
+./build.sh
+```
+
+## Troubleshooting Builds
+
+### App Doesn't Launch
+
+- Check that `config.xml` is valid XML
+- Verify app ID matches in all files
+- Ensure all JavaScript files use ES5 syntax
+- Check Kindle logs at `/var/log/messages`
+
+### Missing Word Lists
+
+- Verify `js/words.js` is included
+- Check file size (should be several hundred KB)
+- Ensure array syntax is correct (commas, brackets)
+
+### Statistics Not Saving
+
+- Confirm localStorage quota in `config.xml`
+- Check localStorage permissions
+- Verify JSON serialization works

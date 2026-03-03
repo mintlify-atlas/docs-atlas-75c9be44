@@ -1,0 +1,274 @@
+---
+title: Troubleshooting
+description: Common issues and solutions for KWordle on Kindle devices
+---
+
+## Common Issues
+
+This page covers common problems you might encounter while installing or playing KWordle on your Kindle device.
+
+## Installation Issues
+
+<Accordion title="KWordle booklet doesn't appear after installation">
+
+**Solution:**
+
+1. Verify that you copied **both** the `kwordle` folder and `kwordle.sh` file to the Documents folder
+2. Safely eject your Kindle and wait for it to index the new files (this may take a few minutes)
+3. Try restarting your Kindle: Hold the power button for 40 seconds until it restarts
+4. Check that the files are in the correct location: `/mnt/us/documents/kwordle/` and `/mnt/us/documents/kwordle.sh`
+
+If the booklet still doesn't appear, the installation script may not have run. This can happen on some Kindle models that don't support KUAL or active content.
+
+</Accordion>
+
+<Accordion title="Wrong build installed (legacy vs. modern)">
+
+**Solution:**
+
+1. Check your Kindle firmware version: **Settings** > **Device Info** > **Firmware Version**
+2. If firmware is **5.6.1.1 or older**, you need `kwordle-legacy.zip`
+3. If firmware is **newer than 5.6.1.1**, you need `kwordle.zip`
+4. Delete the existing `kwordle` folder and `kwordle.sh` from your Kindle
+5. Download and install the correct build
+6. Restart your Kindle
+
+<Warning>
+Using the wrong build may cause the game to not load or display incorrectly.
+</Warning>
+
+</Accordion>
+
+<Accordion title="Files won't copy to Kindle">
+
+**Solution:**
+
+1. Ensure your Kindle is properly connected via USB cable
+2. Check that your Kindle appears as a drive on your computer
+3. Verify the Kindle is not in "Airplane Mode" or locked
+4. Try a different USB cable if the connection is unstable
+5. Make sure you're copying to the **Documents** folder, not the root directory
+6. Check that you have sufficient storage space on your Kindle
+
+</Accordion>
+
+## Gameplay Issues
+
+<Accordion title="Keyboard not responding to input">
+
+**Solution:**
+
+1. **Touch keyboard**: Tap more firmly on the keys - e-ink screens require more deliberate touches
+2. **Physical keyboard**: If your Kindle has a physical keyboard, ensure no keys are stuck
+3. Try tapping directly on the letter center rather than the edges
+4. Reload the game:
+   - **Modern devices**: Use the system menu (More button) > Reload
+   - **Legacy devices**: Close and reopen the KWordle booklet
+5. Clear your browser cache by restarting your Kindle
+
+</Accordion>
+
+<Accordion title="Word list errors or 'Not in word list' for valid words">
+
+**Solution:**
+
+1. Verify you're using words in the correct language for your selected language mode
+2. Check the language button shows your intended language
+3. Some valid words may not be in the game's word lists - this is intentional to keep lists manageable
+4. Ensure all letters are entered (exactly 5 letters required)
+5. Remove any accented characters - the game uses non-accented variants (e.g., "e" instead of "é")
+
+<Note>
+The game uses curated word lists that may not include all valid 5-letter words in a language.
+</Note>
+
+</Accordion>
+
+<Accordion title="Game won't submit guess (Enter not working)">
+
+**Solution:**
+
+1. Ensure you've entered exactly 5 letters - the Enter key only works when the row is full
+2. Check that all 5 cells in the current row show letters
+3. Try using the on-screen ✓ button instead of pressing Enter on a physical keyboard
+4. Reload the game if the issue persists
+
+</Accordion>
+
+<Accordion title="Statistics not saving or resetting">
+
+**Solution:**
+
+1. Check that localStorage is enabled on your Kindle browser
+2. Don't clear browser data or cache while games are in progress
+3. Ensure you're not in "Private Browsing" mode (if applicable)
+4. Statistics are saved when a game completes (win or lose) - incomplete games don't save stats
+5. If stats reset after Kindle restart, this may indicate a browser storage issue
+
+**Note**: Statistics are stored locally and cannot be backed up or transferred between devices.
+
+</Accordion>
+
+<Accordion title="Display issues: letters not showing or overlapping">
+
+**Solution:**
+
+1. **E-ink refresh**: Tap anywhere on screen to force a refresh
+2. **Screen ghosting**: This is normal for e-ink displays - try using Kindle's screen refresh feature
+3. **Font size**: Ensure your Kindle's font size settings are not extremely large
+4. **Zoom**: Make sure you haven't zoomed in the browser view
+5. Restart the game to reset the display
+
+</Accordion>
+
+## Language Issues
+
+<Accordion title="Can't switch languages or missing language options">
+
+**Solution:**
+
+1. Tap the language button (default shows "English") to cycle through languages
+2. Current supported languages:
+   - English
+   - French
+   - German
+   - Spanish
+   - Portuguese
+   - Swedish
+   - Italian
+   - Latin
+3. Each tap cycles to the next language
+4. Starting a new game after changing language loads the new word list
+
+</Accordion>
+
+<Accordion title="Special characters not working (Swedish: Å, Ä, Ö)">
+
+**Solution:**
+
+1. Select Swedish language mode first - special characters only appear in Swedish keyboard
+2. Look for special characters in the keyboard layout after switching to Swedish
+3. Use the on-screen keyboard rather than physical keyboard for special characters
+4. The special keys appear at the end of the first two keyboard rows
+
+</Accordion>
+
+## Performance Issues
+
+<Accordion title="Game running slowly or freezing">
+
+**Solution:**
+
+1. Close other open books or documents on your Kindle
+2. Restart your Kindle to free up memory
+3. Check available storage - very low storage can impact performance
+4. On legacy devices, performance may be inherently slower due to older hardware
+5. Avoid rapid tapping - e-ink displays need time to refresh
+
+</Accordion>
+
+<Accordion title="Screen not refreshing properly">
+
+**Solution:**
+
+1. This is normal e-ink behavior - screens refresh slower than LCD
+2. Wait for the screen to fully refresh before the next input
+3. Use Kindle's manual refresh if available (check your model's documentation)
+4. Reduce input speed to give the display time to update
+
+</Accordion>
+
+## Advanced Troubleshooting
+
+### Complete Reinstallation
+
+If you're experiencing persistent issues:
+
+1. Connect your Kindle to your computer
+2. Navigate to the Documents folder
+3. Delete the `kwordle` folder and `kwordle.sh` file
+4. Safely eject your Kindle
+5. Restart your Kindle
+6. Download the correct build for your firmware version
+7. Extract and copy files to Documents folder
+8. Safely eject and test
+
+### Checking Installation Logs
+
+The `kwordle.sh` script creates the application registration. If installation fails:
+
+1. Check that the script has execute permissions
+2. Verify the app registration in `/var/local/appreg.db` (requires shell access)
+3. Look for the app ID: `xyz.kurizu.kwordle`
+4. Ensure files are copied to `/var/local/mesquite/kwordle`
+
+<Warning>
+Accessing system files requires jailbreaking your Kindle and may void your warranty. Only attempt if you're comfortable with advanced Kindle modifications.
+</Warning>
+
+### Debug Mode
+
+The game includes a hidden debug log:
+
+1. Edit `index.html` in a text editor
+2. Find the line: `<div id="log" style="display:none;"></div>`
+3. Change to: `<div id="log" style="display:block;"></div>`
+4. Reload the game to see debug output
+
+## Still Having Issues?
+
+If you've tried these solutions and still experience problems:
+
+1. **Check GitHub Issues**: Visit the [KWordle GitHub repository](https://github.com/crizmo/KWordle/issues) to see if others have reported similar issues
+2. **Report a bug**: Create a new issue with:
+   - Your Kindle model
+   - Firmware version
+   - Which build you're using (legacy or modern)
+   - Detailed description of the problem
+   - Steps to reproduce
+3. **Community support**: Check discussions for community help and tips
+
+## Frequently Asked Questions
+
+<Accordion title="Can I play KWordle on non-Kindle devices?">
+
+KWordle is specifically designed for Kindle e-readers and optimized for e-ink displays. While it may work in a desktop browser, the experience is tailored for Kindle hardware and may not look or function as intended on other devices.
+
+</Accordion>
+
+<Accordion title="Does KWordle need an internet connection?">
+
+No! KWordle is completely offline. All word lists are bundled with the game, and it stores statistics locally using localStorage. No internet connection is required to play.
+
+</Accordion>
+
+<Accordion title="How do I update KWordle to a new version?">
+
+To update:
+
+1. Delete the old `kwordle` folder and `kwordle.sh` from Documents
+2. Download the latest release from GitHub
+3. Copy the new files to your Kindle's Documents folder
+4. Restart your Kindle
+
+**Note**: Your statistics are stored in browser localStorage and should persist across updates, but it's good practice to note them down before updating.
+
+</Accordion>
+
+<Accordion title="Can I add my own word lists?">
+
+Yes! See the README.md for instructions on adding new languages. You'll need to:
+
+1. Prepare two word lists: guessing words and accepted words
+2. Remove accented characters
+3. Format as JavaScript arrays
+4. Edit `words.js` and `main.js` to add the new language
+5. Add credits in the `showCredits()` function
+
+</Accordion>
+
+<Accordion title="Why are there two different builds?">
+
+Legacy Kindle devices (firmware 5.6.1.1 and older) don't support chromebar integration and some modern browser features. The legacy build removes these features to ensure compatibility, while the modern build includes full system integration for newer devices.
+
+</Accordion>

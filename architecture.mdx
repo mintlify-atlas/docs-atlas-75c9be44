@@ -1,0 +1,177 @@
+---
+title: Architecture
+description: Code structure, main components, and game state management in KWordle
+---
+
+KWordle is built as a lightweight, self-contained web application optimized for Kindle e-readers. This page explains the architecture and code organization.
+
+## File Organization
+
+The KWordle application consists of these key files:
+
+```
+kwordle/
+├── index.html          # Main HTML file with Chromebar configuration
+├── main.js             # Core game logic and state management
+├── main.css            # Styles optimized for e-ink display
+├── config.xml          # Kindle application configuration
+├── js/
+│   ├── words.js        # Word lists for all supported languages
+│   ├── polyfill.min.js # ES5 compatibility polyfills
+│   └── sdk.js          # Kindle SDK integration
+└── wordle-icon.png     # Application icon
+```
+
+## Core Components
+
+### Game State Management
+
+The entire game state is managed through a single `gameState` object defined in `main.js:2-13`:
+
+```javascript
+var gameState = {
+  targetWord: "",
+  currentAttempt: 0,
+  maxAttempts: 6,
+  gameOver: false,
+  gameWon: false,
+  letterGrid: [],
+  letterKeyboard: {},
+  wordLength: 5,
+  language: 0, // 0: English, 1: French, 2: German, etc.
+  message: ""
+};
+```
+
+### Letter States
+
+The game uses a state system for tracking letter correctness (`main.js:17-24`):
+
+```javascript
+const states = {
+  empty: 0,
+  filled: 1,
+  correct: 2,
+  present: 3,
+  absent: 4,
+  unused: 5
+};
+const stateStyles = ["empty", "filled", "correct", "present", "absent", "unused"];
+```
+
+These states are used to:
+- Style grid cells and keyboard keys
+- Track which letters have been guessed
+- Show visual indicators (■, □, ×) for correct, present, and absent letters
+
+### Main Functions
+
+#### Game Initialization
+
+`initGame()` (main.js:37) - Initializes or resets the game:
+- Resets game state
+- Creates a 6×5 letter grid
+- Initializes keyboard tracking
+- Selects a random target word
+- Updates the UI
+
+#### Input Handling
+
+`handleKeyInput(key)` (main.js:123) - Central input handler:
+- Processes keyboard and on-screen keyboard input
+- Handles letter entry, backspace, and enter
+- Validates and submits guesses
+
+#### Guess Validation
+
+`checkGuess(guess)` (main.js:243) - Two-pass algorithm:
+1. **First pass**: Mark all correct position letters (green/dark gray)
+2. **Second pass**: Mark present letters in wrong positions (light gray)
+
+This ensures accurate handling of duplicate letters.
+
+#### Statistics Tracking
+
+`loadStatistics()` (main.js:447) and `saveStatistics()` (main.js:463) manage game statistics in localStorage:
+
+```javascript
+{
+  gamesPlayed: 0,
+  gamesWon: 0,
+  currentStreak: 0,
+  maxStreak: 0,
+  guessDistribution: [0, 0, 0, 0, 0, 0]
+}
+```
+
+## UI Components
+
+### Letter Grid
+
+The grid is dynamically generated in `updateGrid()` (main.js:301) with:
+- 6 rows of 5 cells each
+- Visual indicators for letter states
+- Optimized contrast for e-ink displays
+
+### Virtual Keyboard
+
+The keyboard is generated in `updateKeyboard()` (main.js:355) with:
+- QWERTY layout across 3 rows
+- Special keys: ✓ (Enter) and ← (Backspace)
+- Language-specific letters (e.g., Å, Ä, Ö for Swedish)
+- State indicators on each key
+
+### Indicator Key
+
+A legend at `main.js:94` explains the symbols:
+- ■ = Correct spot
+- □ = Wrong spot  
+- × = Not in word
+
+## Language Support
+
+Supported languages are defined in `languageList` (main.js:15):
+
+```javascript
+const languageList = ["English", "French", "German", "Spanish", 
+                      "Portuguese", "Swedish", "Italian", "Latin"];
+```
+
+Word lists are stored in `js/words.js` as two arrays per language:
+- `wordList` - Words that can be selected as answers
+- `accepted` - All valid 5-letter words that can be guessed
+
+## Installation & Deployment
+
+The application is deployed using `kwordle.sh`, which:
+1. Copies files from `/mnt/us/documents/kwordle` to `/var/local/mesquite/kwordle`
+2. Registers the app in Kindle's `appreg.db` SQLite database
+3. Launches the app via LIPC (Lab126 IPC)
+
+## Integration with Kindle
+
+### Chromebar Configuration
+
+The application configures Kindle's Chromebar in `index.html:14-52` with:
+- App title and ID
+- System menu with reload option
+- Close and more buttons
+
+### Widget Configuration
+
+The `config.xml` file defines:
+- App ID: `xyz.kurizu.kwordle`
+- Permissions for local storage and messaging
+- Network settings and cookie jar configuration
+- Gesture support (tap and swipe)
+- LocalStorage quota: 25MB
+
+## Event Flow
+
+1. **Page Load**: `onPageLoad()` (main.js:565) sets up keyboard listeners and initializes the game
+2. **User Input**: Physical or virtual keyboard triggers `handleKeyInput()`
+3. **Letter Entry**: Letters are added to current row until filled
+4. **Guess Submission**: Enter key validates word and checks against target
+5. **State Update**: Grid and keyboard states are updated with results
+6. **Game End**: Statistics are saved when game is won or lost
+7. **New Game**: Reset button calls `initGame()` to start fresh
