@@ -1,0 +1,73 @@
+{
+  "projectType": "frontend",
+  "projectName": "KWordle",
+  "projectDescription": "Wordle game optimized for jailbroken Kindle e-readers with multi-language support and e-ink display optimization.",
+  "theme": "almond",
+  "primaryColor": "#777777",
+  "lightColor": "#d3d6da",
+  "darkColor": "#3a3a3c",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "installation",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "User Guide",
+        "pages": [
+          "gameplay",
+          "languages",
+          "statistics",
+          "controls"
+        ]
+      },
+      {
+        "group": "Development",
+        "pages": [
+          "architecture",
+          "adding-languages",
+          "technical-details",
+          "building"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "compatibility",
+          "troubleshooting",
+          "changelog"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Classic 5-letter word guessing gameplay",
+    "Multi-language support (English, French, German, Spanish, Portuguese, Swedish, Italian, Latin)",
+    "E-ink display optimization with special visual indicators",
+    "Game statistics tracking with localStorage",
+    "Keyboard input support",
+    "Chromebar integration for modern Kindle devices",
+    "Legacy device support (Kindle 5.6.1.1 and older)",
+    "Offline gameplay"
+  ],
+  "publicApiSurface": [
+    "gameState object (game state management)",
+    "initGame() (initialize game)",
+    "resetGame() (start new game)",
+    "selectRandomWord() (word selection)",
+    "submitGuess() (process player guess)",
+    "updateUI() (render game interface)",
+    "changeLanguage() (switch language)",
+    "showStatistics() (display stats)",
+    "showCredits() (display credits)",
+    "saveStatistics() (persist stats to localStorage)",
+    "loadStatistics() (load stats from localStorage)",
+    "handleKeyPress() (keyboard input handler)",
+    "updateIndicatorKey() (display legend)",
+    "kwordle.sh (installation shell script)"
+  ]
+}
